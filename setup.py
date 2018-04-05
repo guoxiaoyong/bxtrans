@@ -7,8 +7,8 @@ setup(name='bxtran',
       license='GPL',
       author='Xiaoyong Guo',
       author_email='guoxiaoyong@guoxiaoyong.com',
-      description="Xiaoyong's personal tool."
+      description="Xiaoyong's personal tool.",
       entry_points={
-          'console_scripts': []
+          'gui_scripts': ['bxtrans = bxtrans.bxtrans:main']
       }
 )
