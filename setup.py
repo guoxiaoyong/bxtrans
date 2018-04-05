@@ -1,12 +1,14 @@
 from setuptools import setup
 
-setup(
-  name='bxtran',
-  version='',
-  packages=[''],
-  url='www.github.com/guoxiaoyong/bxtran',
-  license='',
-  author='Xiaoyong Guo',
-  author_email='guoxiaoyong@guoxiaoyong.com',
-  description=''
+setup(name='bxtran',
+      version='0.0.1',
+      packages=['bxtrans'],
+      url='www.github.com/guoxiaoyong/bxtrans',
+      license='GPL',
+      author='Xiaoyong Guo',
+      author_email='guoxiaoyong@guoxiaoyong.com',
+      description="Xiaoyong's personal tool."
+      entry_points={
+          'console_scripts': []
+      }
 )
