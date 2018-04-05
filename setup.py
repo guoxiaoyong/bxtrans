@@ -1,6 +1,6 @@
 from setuptools import setup
 
-setup(name='bxtran',
+setup(name='bxtrans',
       version='0.0.1',
       packages=['bxtrans'],
       url='www.github.com/guoxiaoyong/bxtrans',
