@@ -1,9 +1,16 @@
 import collections
 
-import matplotlib.pyplot as plt
-import numpy
+from recordclass import recordclass
 
 from gbm import RandomProcess, get_series
+
+
+def which_case(x=0,y=0,C1=0,C2=0,A=0,T=0,a=0,b=0,p1=0,p2=0,dt=0, **kwargs):
+  #print = lambda x:None
+  if p1 + a + A < p2 - T:
+    print('compare C1 and C2: %s, %s' % (C1, C2))
+  else:
+    print('compare b and A+C1: %s, %s' % (b, A+C1))
 
 
 def F(x=0,y=0,C1=0,C2=0,A=0,T=0,a=0,b=0,p1=0,p2=0,dt=0, **kwargs):
@@ -46,38 +53,38 @@ class Evo(RandomProcess):
   ParamType = collections.namedtuple(
       'EvoProcess_param',
       ['C1', 'C2', 'A', 'T', 'a', 'b', 'p1', 'p2', 'dt'])
+  StateType = recordclass('Evo_state', ['x', 'y', 't'])
 
   def __next__(self):
-    param = {**self.param._asdict(), **self.state._asdict(), **self.state.s}
+    res = self.StateType(**self.state._asdict())
+    param = {**self.param._asdict(), **self.state._asdict()}
     dx = F(**param) * self.param.dt
     dy = G(**param) * self.param.dt
 
-    self.state.s['x'] += dx
-    self.state.s['y'] += dy
+    self.state.x += dx
+    self.state.y += dy
     self.state.t += self.param.dt
-    return self.state
+    return res
 
 
-state = {'x': 0.1, 'y': 0.1}
-xx = Evo.create(
-    C1=2,
-    C2=1.8,
-    A=0.5,
-    T=1.1,
-    a=0.9,
-    b=4.7,
-    p1=1.8,
-    p2=4,
-    dt=0.1,
-    s=state,
-    t=0,
-)
+def get_sim_results(C2, b, A, N=30, dt=0.1):
+  state = {'x': 0.5, 'y': 0.5}
+  evo = Evo.create(
+      C1=2,
+      C2=C2,
+      A=A,
+      T=1.1,
+      a=0.9,
+      b=b,
+      p1=0.8,
+      p2=4,
+      dt=dt,
+      t=0,
+      **state,
+  )
 
-#s, t = get_series(xx, 10)
-#for n in s: print(n)
-for n in range(100000):
-  print(next(xx))
-
-#plt.figure()
-#plt.plot(t, s, marker='.')
-#plt.show()
+  res = []
+  for _ in range(N+1):
+    r = next(evo)
+    res.append(dict(r._asdict()))
+  return res
