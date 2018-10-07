@@ -13,7 +13,7 @@ def main():
   title = '$C_1$=2, $A$={A}, $T$=1.1, $a$=0.9, $b$={b}, $\pi_1$=0.8, $\pi_2$=4\n$\pi_1 + a + A < \pi_2 - T$'.format(A=A,b=b)
   plt.figure()
   for C2 in c2_list:
-    res = get_sim_results(C2, b, A, dt=0.1, N=40)
+    res = get_sim_results(C2, b, A, dt=0.1, N=300)
     t = [v['t'] for v in res]
     x = [v['x'] for v in res]
     y = [v['y'] for v in res]
@@ -24,8 +24,8 @@ def main():
   plt.xlabel('Time($t$)')
   plt.legend(loc='center right')
   plt.grid()
-  #plt.xticks(np.arange(0, 31, step=2))
-  #plt.yticks(np.arange(0, 1.2, step=0.2))
+  plt.xticks(np.arange(0, 31, step=2))
+  plt.yticks(np.arange(0, 1.2, step=0.2))
   plt.ylim(0, .52)
   plt.xlim(left=0)
   plt.show()
