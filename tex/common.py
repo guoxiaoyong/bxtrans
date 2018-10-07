@@ -76,7 +76,7 @@ def get_sim_results(C2, b, A, N=30, dt=0.1):
       T=1.1,
       a=0.9,
       b=b,
-      p1=0.8,
+      p1=2.8,
       p2=4,
       dt=dt,
       t=0,
