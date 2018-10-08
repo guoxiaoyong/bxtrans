@@ -65,21 +65,10 @@ class Evo(RandomProcess):
     return res
 
 
-def get_sim_results(C2, b, A, N=30, dt=0.1):
-  state = {'x': 0.5, 'y': 0.5}
-  evo = Evo.create(
-      C1=2,
-      C2=C2,
-      A=A,
-      T=1.1,
-      a=0.9,
-      b=b,
-      p1=0.8,
-      p2=4,
-      dt=dt,
-      t=0,
-      **state,
-  )
+def get_sim_results(**kwargs):
+  x = kwargs.get('x', 0.5)
+  y = kwargs.get('y', 0.5)
+  evo = Evo.create(**kwargs)
 
   res = []
   for _ in range(N+1):
