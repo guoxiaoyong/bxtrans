@@ -71,6 +71,7 @@ def get_sim_results(**kwargs):
   evo = Evo.create(**kwargs)
 
   res = []
+  N = kwargs.get('N', 40)
   for _ in range(N+1):
     r = next(evo)
     res.append(dict(r._asdict()))

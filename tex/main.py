@@ -15,11 +15,11 @@ def get_config(filename):
   values = []
   for k, v in config.items():
     keys.append(k)
-    values.append(v)
+    values.append(v if isinstance(v, list) else [v])
 
   res = []
   for v in itertools.product(*values):
-    res.append(dict(zip(k, v)))
+    res.append(dict(zip(keys, v)))
   return res
 
 
@@ -32,17 +32,12 @@ def main():
     t = [v['t'] for v in res]
     x = [v['x'] for v in res]
     y = [v['y'] for v in res]
-    plt.plot(t, x, marker=next(markers), label='$C_2$=%s' % C2)
-    plt.plot(t, y, marker=next(markers), label='C2=%s' % C2)
-  plt.title(title)
+    plt.plot(t, x, marker=next(markers))
+    plt.plot(t, y, linestyle='--')
   plt.ylabel('$x$')
   plt.xlabel('Time($t$)')
   plt.legend(loc='center right')
   plt.grid()
-  plt.xticks(np.arange(0, 31, step=2))
-  plt.yticks(np.arange(0, 1.2, step=0.1))
-  plt.ylim(0, 1.02)
-  plt.xlim(left=0)
   plt.show()
 
 if __name__ == '__main__':
