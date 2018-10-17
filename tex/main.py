@@ -1,7 +1,7 @@
-import sys
 import itertools
 import matplotlib.pyplot as plt
 import numpy as np
+import sys
 import yaml
 
 from common import get_sim_results

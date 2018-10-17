@@ -1,11 +1,8 @@
-import collections
-from recordclass import recordclass
-
-def F(x=0,y=0,C1=0,C2=0,A=0,T=0,a=0,b=0,p1=0,p2=0,dt=0, **kwargs):
+function F(x, y, C1, C2, A, T, a, b, p1, p2, dt):
   return x * (1-x) * ((C2-C1) + (-A+b-C2)*y)
 
 
-def G(x=0,y=0,C1=0,C2=0,A=0,T=0,a=0,b=0,p1=0,p2=0,dt=0, **kwargs):
+function G(x, y, C1, C2, A, T, a, b, p1, p2, dt):
   return y * (1-y) * ((p1-p2+a) + (A+T)*x)
 
 
@@ -64,3 +61,5 @@ def get_sim_results(**kwargs):
     r = next(evo)
     res.append(dict(r._asdict()))
   return res
+
+
