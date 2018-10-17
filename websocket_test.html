@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8" />
+<title>WebSocket Test</title>
+<!--
+  版本：1.0<br/>
+  作者：OKCoin<br/>
+-->
+<script type="text/javascript" src="MD5.js"></script>
+<script type="text/javascript">
+  var okCoinWebSocket = {};
+  okCoinWebSocket.init = function(uri, apiKey, secretKey) {
+    this.wsUri = uri;
+    this.apiKey = apiKey;
+    this.secretKey = secretKey;
+    this.lastHeartBeat = new Date().getTime();
+    this.overtime = 15000;
+  
+    okCoinWebSocket.websocket = new WebSocket(okCoinWebSocket.wsUri);
+  
+    okCoinWebSocket.websocket.onopen = function(evt) {
+      onOpen(evt)
+    };
+    okCoinWebSocket.websocket.onclose = function(evt) {
+      onClose(evt)
+    };
+    okCoinWebSocket.websocket.onmessage = function(evt) {
+      onMessage(evt)
+    };
+    okCoinWebSocket.websocket.onerror = function(evt) {
+      onError(evt)
+    };
+  
+    setInterval(checkConnect,5000);
+  }
+  
+  function checkConnect() {
+    okCoinWebSocket.websocket.send("{'event':'ping'}");
+    if ((new Date().getTime() - okCoinWebSocket.lastHeartBeat) > okCoinWebSocket.overtime) {
+      console.log("socket 连接断开，正在尝试重新建立连接");
+      testWebSocket();
+    }
+  }
+  
+  function onOpen(evt) {
+    print("CONNECTED");
+    //////////////////okex合约//////////////////////////////////////////////////
+     //login();
+       // doSend("{'event':'addChannel','channel':'ok_sub_spot_ltc_btc_depth_10'}");//订阅合约K线数据
+    //doSend("{'event':'addChannel','channel':'ok_sub_futureusd_btc_trade_quarter'}"); //订阅合约交易信息
+    //doSend("{'event':'addChannel','channel':'ok_sub_futureusd_eth_trade_this_week'}"); //订阅合约交易信息
+    //doSend("{'event':'addChannel','channel':'ok_sub_futureusd_ltc_depth_quarter_10'}");//订阅合约市场深度
+  // doSend("{'event':'addChannel','channel':'ok_sub_futureusd_btc_depth_this_week'}");//订阅合约市场深度(200增量数据返回)
+  //doSend("{'event':'addChannel','channel':'ok_sub_futureusd_ltc_depth_this_week'}");//订阅合约市场深度(200增量数据返回)
+  //doSend("{'event':'addChannel','channel':'ok_sub_futureusd_btc_depth_this_week'}");//订阅合约市场深度(200增量数据返回)
+    // doSend("{'event':'addChannel','channel':'ok_sub_futureusd_btc_index'}");//合约指数
+  //doSend("{'event':'addChannel','channel':'ok_sub_futureusd_btc_ticker_this_week'}"); //订阅合约行情
+
+      //////////////////okex现货//////////////////////////////////////////////////
+
+      //  doSend("{'event':'addChannel','channel':'ok_sub_spot_btc_usd_ticker'}");//OKEX现货行情
+           // doSend("{'event':'addChannel','channel':'ok_sub_spot_etc_btc_ticker'}");//OKEX现货行情
+          // doSend("{'event':'addChannel','channel':'ok_sub_spot_btc_usdt_depth'}");//OKEX现货订阅现货市场深度(200增量数据返回)
+          // doSend("{'event':'addChannel','channel':'ok_sub_spot_eos_usdt_depth_5'}");//OKEX现货订阅市场深度
+          // doSend("{'event':'addChannel','channel':'ok_sub_spot_bch_btc_deals'}");//OKEX现货订阅成交记录
+          doSend("{'event':'addChannel','channel':'ok_sub_spot_btc_usdt_kline_1min'}");//OKEX现货订阅K线数据
+
+
+  
+//////////////////////////交易API////////////////////////////////////////////////////////////////////////////////////////
+
+    //查询账户信息（不是推送，请求一次返回一次）
+    // spotUserInfo();
+    //订阅账户信息（用登录就会订阅）
+    // spotUserinfos();
+      //登录，登录成功后会收到交易数据、账户信息的订阅。
+    //login();
+  
+    //现货下单
+    //spotTradeSell();
+    //现货下单-市价卖
+    //spotTradeSellMarket()
+    //现货下单-市价买
+    //spotTradeBuyMarket()
+    //现货下单-限价买
+      // login();
+
+    // spotTradeBuy();
+    //现货下单-限价卖
+    //spotTradeSell()
+    //查询订单信息spotOrderInfo(orderId,symbol)  154563  154564   449047447  449047448
+    // spotOrderInfo('6985','bcc_btc');
+    //取消订单spotCancelOrder(orderId);
+    // spotCancelOrder('447900687');
+    //订阅交易数据
+    //spotTrades() 
+    
+
+    //期货下单
+        // futureTrade();
+        //futureOrderInfo(358656);
+        //doSend('{"event":"login","userId":"88c41bab-b784-4b62-a7ff-49357530e4d20c6c00b728b2355b","binary":"0"}');
+       //doSend('{"event":"login","parameters":{},"binary":"0"}');
+      //////////////合约行情//////////////////////////////////////////////////////
+    //合约下单
+  // futureTrade()
+  
+  //合取消订单
+  //futureCancelOrder('358663');
+  
+
+//futureUserInfo()  
+  
+  //订阅合约行情USD
+  //doSend("{'event':'addChannel','channel':'ok_sub_futureusd_btc_ticker_next_week'}"); 
+  //订阅合约K线数据()USD
+  //doSend("{'event':'addChannel','channel':'ok_sub_futureusd_btc_kline_this_week_week'}"); 
+    //订阅合约市场深度
+  //doSend("{'event':'addChannel','channel':'ok_sub_futureusd_ltc_depth_this_week_60'}"); 
+  //订阅合约交易信息
+  //doSend("{'event':'addChannel','channel':'ok_sub_futureusd_ltc_trade_this_week'}"); 
+  //订阅合约指数USD
+  //doSend("{'event':'addChannel','channel':'ok_sub_futureusd_btc_index'}"); 
+
+  //futureUserinfos() 
+  // login();
+  }
+  
+  
+  
+    
+    function onClose(evt) {
+      print("DISCONNECTED");
+    }
+    
+    function onMessage(e) {
+      var array = JSON.parse(e.data);
+        console.log(array);
+        var node=document.createTextNode(e.data+"------------------");
+        document.getElementById("output").innerHTML=e.data+"<br/>";
+    }
+    
+    function onError(evt) {
+      print('<span style="color: red;">ERROR:</span> ' + evt.data);
+    }
+    
+    function doSend(message) {
+      print("SENT: " + message);
+      okCoinWebSocket.websocket.send(message);
+    }
+    
+    function print(message) {
+      var status = document.getElementById("status");
+      status.style.wordWrap = "break-word";
+    
+      status.innerHTML += message + "<br/>";
+    }
+  //登录
+  function login() {
+  var sign = MD5("api_key=" + okCoinWebSocket.api_key + "&secret_key=" + okCoinWebSocket.secret_key);
+  doSend("{'event':'login','binary':'0','parameters' :{'api_key':'"
+        + okCoinWebSocket.api_key + "','sign':'" + sign + "'}}");
+  }
+    
+  //现货下单-市价买
+  function spotTradeBuyMarket() {
+    var sign = MD5("api_key=" + okCoinWebSocket.api_key
+        + "&price=100&symbol=btc_cny&type=buy_market&secret_key=" + okCoinWebSocket.secret_key);
+    doSend("{'event':'addChannel','channel':'ok_spotusd_trade','parameters':{'api_key':'" + okCoinWebSocket.api_key
+        + "','sign':'" + sign + "','symbol':'btc_cny','type':'buy_market','price':'100'}}");
+  }
+  //现货下单-市价卖
+  function spotTradeSellMarket() {
+    var sign = MD5("amount=0.1&api_key=" + okCoinWebSocket.api_key
+        + "&symbol=btc_cny&type=sell_market&secret_key=" + okCoinWebSocket.secret_key);
+    doSend("{'event':'addChannel','channel':'ok_spotcny_trade','parameters':{'api_key':'" + okCoinWebSocket.api_key
+        + "','sign':'" + sign + "','symbol':'btc_cny','type':'sell_market','amount':'0.1'}}");
+  }
+  //现货下单-限价卖
+  function spotTradeSell() {
+    var sign = MD5("amount=1.02&api_key=" + okCoinWebSocket.api_key
+        + "&price=10000&symbol=btc_cny&type=sell&secret_key=" + okCoinWebSocket.secret_key);
+    doSend("{'event':'addChannel','channel':'ok_spotusd_trade','parameters':{'api_key':'" + okCoinWebSocket.api_key
+        + "','sign':'" + sign + "','symbol':'btc_cny','type':'sell','price':'10000','amount':'1.02'}}");
+  }
+  //现货下单-限价买
+  function spotTradeBuy() {
+    var sign = MD5("amount=0.1&api_key=" + okCoinWebSocket.api_key
+        + "&price=1&symbol=bcc_btc&type=buy&secret_key=" + okCoinWebSocket.secret_key);
+    doSend("{'event':'addChannel','channel':'ok_spot_bcc_btc_order','parameters':{'api_key':'" + okCoinWebSocket.api_key
+        + "','sign':'" + sign + "','symbol':'bcc_btc','type':'buy','price':'1','amount':'0.1'}}");
+  }
+  
+  
+  //现货取消订单
+  function spotCancelOrder(orderId) {
+    var sign = MD5("api_key=" + okCoinWebSocket.api_key + "&order_id=" + orderId
+        + "&symbol=btc_cny&secret_key=" + okCoinWebSocket.secret_key);
+    doSend("{'event':'addChannel','channel':'ok_spotcny_cancel_order','parameters':{'api_key':'" + okCoinWebSocket.api_key
+        + "','sign':'" + sign + "','symbol':'btc_cny','order_id':'" + orderId + "'}}");
+  }
+  
+  //现货个人信息(账户信息)
+  function spotUserInfo() {
+    var sign = MD5("api_key=" + okCoinWebSocket.api_key + "&secret_key=" + okCoinWebSocket.secret_key);
+    doSend("{'event':'addChannel','channel':'ok_spot_userinfo','parameters' :{'api_key':'"
+        + okCoinWebSocket.api_key + "','sign':'" + sign + "'}}");
+  }
+  
+  //查询订单信息
+  function spotOrderInfo(orderId,symbol){
+      var type="ok_spot_bcc_btc_orderinfo";
+    var sign = MD5("api_key=" + okCoinWebSocket.api_key + "&order_id="+orderId+"&symbol="+symbol+"&secret_key=" + okCoinWebSocket.secret_key);
+    doSend("{'event':'addChannel','channel':'"+type+"','parameters' :{'api_key':'"+ okCoinWebSocket.api_key + "','symbol':'"+symbol+"','order_id':'"+orderId+"','sign':'" + sign + "'}}");
+  }
+  //订阅交易数据
+  function spotTrades() {
+    var sign = MD5("api_key=" + okCoinWebSocket.api_key + "&secret_key=" + okCoinWebSocket.secret_key);
+    doSend("{'event':'addChannel','channel':'ok_sub_spotusd_trades','parameters' :{'api_key':'"
+        + okCoinWebSocket.api_key + "','sign':'" + sign + "'}}");
+  }
+  //订阅账户信息
+  function spotUserinfos() {
+    var sign = MD5("api_key=" + okCoinWebSocket.api_key + "&secret_key=" + okCoinWebSocket.secret_key);
+    doSend("{'event':'addChannel','channel':'ok_sub_spot_userinfo','parameters' :{'api_key':'"
+        + okCoinWebSocket.api_key + "','sign':'" + sign + "'}}");
+  }
+  
+  
+  //function onOpen(evt) {
+    //print("CONNECTED");   3559964  66  67  68  72  71 
+    //futureTrade()
+    //futureCancelOrder('359968')
+    //futureOrderInfo('359964')
+    
+    //login()
+  //}
+  //合约下单
+  function futureTrade() {
+    var sign = MD5("amount=1&api_key=" + okCoinWebSocket.api_key +
+        "&contract_type=quarter&lever_rate=10&match_price=0&price=500&symbol=btc_usd&type=1&secret_key=" + okCoinWebSocket.secret_key);
+    doSend("{'event': 'addChannel','channel':'ok_future_trade','parameters': {'api_key': '"
+        + okCoinWebSocket.api_key + "','sign': '" + sign + "','symbol': 'btc_usd','contract_type': 'quarter','amount': '1','price': '500','type': '1','match_price': '1','lever_rate': '20'}}");
+  }
+  
+  
+
+  //合取消订单
+  function futureCancelOrder(orderId) {
+    var sign = MD5("api_key=" + okCoinWebSocket.api_key + "&contract_type=this_week&order_id=" + orderId
+        + "&symbol=ltc_usd&secret_key=" + okCoinWebSocket.secret_key);
+    doSend("{'event': 'addChannel','channel': 'ok_futureusd_cancel_order','parameters': {'api_key': '"
+        + okCoinWebSocket.api_key + "','sign': '" + sign + "','symbol': 'ltc_usd','order_id': '" + orderId
+        + "','contract_type': 'this_week'}}");
+  }
+  
+  //查询合约个人信息
+  function futureUserInfo() {
+    var sign = MD5("api_key=" + okCoinWebSocket.api_key + "&secret_key=" + okCoinWebSocket.secret_key);
+    doSend("{'event':'addChannel','channel':'ok_futureusd_userinfo','parameters' :{'api_key':'"
+        + okCoinWebSocket.api_key + "','sign':'" + sign + "'}}");
+  }
+  
+  //查询合约订单
+  function futureOrderInfo(orderId) {
+     //api_key=afa8e864-d928-4f99-b05c-48795c4ec6fc&contract_type=this_week&current_page=1&order_id=358656&page_length=1&status=1&symbol=ltc_usd&secret_key=17DC2803754A06F7BF26012F0A27B420
+    var sign = MD5("api_key=" + okCoinWebSocket.api_key + "&contract_type=this_week&current_page=1&order_id=" + orderId
+        + "&page_length=1&status=1&symbol=ltc_usd&secret_key=" + okCoinWebSocket.secret_key );
+    doSend("{'event': 'addChannel','channel': 'ok_futureusd_orderinfo','parameters': {'api_key': '"
+        + okCoinWebSocket.api_key + "','sign': '" + sign + "','symbol': 'ltc_usd','order_id': '" + orderId
+        + "','contract_type': 'this_week','status':'1','current_page':'1','page_length':'1'}}");
+  }
+  
+  //订阅合约交易数据
+  function futureTrades() {
+    var sign = MD5("api_key=" + okCoinWebSocket.api_key + "&secret_key=" + okCoinWebSocket.secret_key);
+    doSend("{'event':'addChannel','channel':'ok_sub_futureusd_trades','parameters' :{'api_key':'"
+        + okCoinWebSocket.api_key + "','sign':'" + sign + "'}}");
+  }
+  
+  //订阅合约账户信息
+  function futureUserinfos() {
+    var sign = MD5("api_key=" + okCoinWebSocket.api_key + "&secret_key=" + okCoinWebSocket.secret_key);
+    doSend("{'event':'addChannel','channel':'ok_sub_futureusd_userinfo','parameters' :{'api_key':'"
+        + okCoinWebSocket.api_key + "','sign':'" + sign + "'}}");
+  }
+  
+  
+  //订阅合约持仓信息
+  function futurePositions() {
+    var sign = MD5("api_key=" + okCoinWebSocket.api_key + "&secret_key=" + okCoinWebSocket.secret_key);
+    doSend("{'event':'addChannel','channel':'ok_sub_futureusd_positions','parameters' :{'api_key':'"
+        + okCoinWebSocket.api_key + "','sign':'" + sign + "'}}");
+  }
+  function initWeb(){
+      
+
+      
+      // okCoinWebSocket.api_key='';
+      // okCoinWebSocket.secret_key='';
+  
+    
+    
+    url="wss://real.okex.com:10440/websocket/okexapi";//合约okexs
+  
+    
+  
+    
+  
+
+          
+
+      
+      okCoinWebSocket.init(url, okCoinWebSocket.api_key,okCoinWebSocket.secret_key);
+
+    }
+  window.onload = initWeb;
+</script>
+<body>
+<h2 id="th2">WebSocket Test</h2>
+<div id="status"></div>
+<div id="output"></div>
+</body>
+</html>
