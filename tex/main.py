@@ -43,7 +43,10 @@ def get_config(case_name):
   return res
 
 
-def main():
+def main(argv):
+  case_name = sys.argv[1]
+  isx = sys.argv[2] == 'x'
+
   markers = itertools.cycle('oD^px')
   configs = get_config(sys.argv[1])
   plt.figure()
@@ -53,8 +56,18 @@ def main():
     x = [v['x'] for v in res]
     y = [v['y'] for v in res]
     marker = next(markers)
-    plt.plot(t, x, marker=marker, markevery=10, markersize=4, label='$x$, %s' % params['label'])
-    plt.plot(t, y, linestyle='--', marker=marker, markevery=10, markersize=4, label='$y$, %s' % params['label'])
+    linestyle = '-'
+    plot_params = dict(
+        linestyle=linestyle,
+        marker=marker,
+        markevery=10,
+        markersize=6,
+        label=params['label']
+   )
+    if isx:
+      plt.plot(t, x, **plot_params)
+    else:
+      plt.plot(t, y, **plot_params)
   plt.ylabel('$x$ and $y$')
   plt.xlabel('Time($t$)')
   plt.legend(loc='center right')
@@ -67,4 +80,4 @@ def main():
 
 
 if __name__ == '__main__':
-  main()
+  main(sys.argv)
