@@ -68,8 +68,8 @@ def main(argv):
       plt.plot(t, x, **plot_params)
     else:
       plt.plot(t, y, **plot_params)
-  plt.ylabel('$x$ and $y$')
   plt.xlabel('Time($t$)')
+  plt.ylabel('$x$' if isx else '$y$')
   plt.legend(loc='center right')
   plt.grid()
   #plt.xticks(np.arange(0, 31, step=2))
