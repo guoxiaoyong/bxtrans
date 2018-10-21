@@ -7,9 +7,16 @@ import yaml
 from common import get_sim_results
 
 
-def get_config(filename):
-  with open(filename) as infile:
-    config = yaml.load(infile)
+def get_config(case_name):
+  with open('cases.yml') as infile:
+    config_list = list(yaml.load_all(infile))
+
+  for cfg in config_list:
+    if cfg['name'] == case_name:
+      config = cfg
+      break
+  else:
+    raise ValueError('case not found!')
 
   keys = []
   values = []
@@ -39,6 +46,7 @@ def main():
   plt.legend(loc='center right')
   plt.grid()
   plt.show()
+
 
 if __name__ == '__main__':
   main()
