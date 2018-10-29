@@ -1,4 +1,5 @@
 import os
+import yaml
 
 import itchat
 
@@ -11,23 +12,21 @@ class Translate(object):
     self._translator = Translator()
 
   def _translate(text):
-      text_en = translator.translate(text).text
-      return text_en
-
+    text_en = self._translator.translate(text).text
+    return text_en
 
   def translate(text):
-      text_list = text.split('\n')
-      res = []
-      for line in text_list:
-          line_en = _translate(line)
-          res.append(line_en)
+    text_list = text.split('\n')
+    res = []
+    for line in text_list:
+      line_en = self._translate(line)
+      res.append(line_en)
       time.sleep(1)
       return '\n'.join(res)
 
 
-
 @itchat.msg_register(itchat.content.TEXT)
-def bash_executor(msg):
+def msg_executor(msg):
     if msg['ToUserName'] != 'filehelper':
       return
 
