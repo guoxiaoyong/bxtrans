@@ -1,9 +1,6 @@
-import os
-import yaml
-
+import time
+import traceback
 import itchat
-
-from sh import bash
 from googletrans import Translator
 
 
@@ -11,11 +8,11 @@ class Translate(object):
   def __init__(self):
     self._translator = Translator()
 
-  def _translate(text):
+  def _translate(self, text):
     text_en = self._translator.translate(text).text
     return text_en
 
-  def translate(text):
+  def translate(self, text):
     text_list = text.split('\n')
     res = []
     for line in text_list:
@@ -25,24 +22,26 @@ class Translate(object):
       return '\n'.join(res)
 
 
+tran = Translate()
+
+
 @itchat.msg_register(itchat.content.TEXT)
 def msg_executor(msg):
     if msg['ToUserName'] != 'filehelper':
       return
 
-    command = msg['Text']
-    output = 'error'
+    text = msg['Text']
+    # noinspection PyBroadException
     try:
-      output = subprocess.check_output(command, shell=True)
-      output = output.decode()
+      output = tran.translate(text)
     except Exception:
-      pass
+      output = traceback.format_exc()
 
     itchat.send(output, 'filehelper')
 
 
 def main():
-  itchat.auto_login(True)
+  itchat.auto_login(True, enablecmdQR=True)
   itchat.run()
 
 
