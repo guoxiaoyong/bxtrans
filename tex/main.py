@@ -20,7 +20,10 @@ from common import get_sim_results
 
 symbol_map = {
   'A': '$A$',
+  'a': '$a$',
   'b': '$b$',
+  'x': '$x$',
+  'y': '$y$',
   'p1': '$\pi_1$',
   'C2': '$C_2$',
 }
