@@ -1,0 +1,10 @@
+cases.yml: 各种情况下的参数
+common.py: 模型
+main.py: 调用模型，生成时间序列，画图
+
+用法：
+1. python main.py case1 x
+2. python main.py case1 y
+
+如果运行出错，用一下命令安装PyYAML模块
+pip install PyYaml
