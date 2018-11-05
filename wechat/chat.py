@@ -41,7 +41,7 @@ def msg_executor(msg):
 
 
 def main():
-  itchat.auto_login(True, enableCmdQR=True)
+  itchat.auto_login(True, enableCmdQR=-3)
   itchat.run()
 
 
