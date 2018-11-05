@@ -1,8 +1,20 @@
 import itertools
-import matplotlib.pyplot as plt
-import numpy as np
 import sys
 import yaml
+
+use_gui = False
+try:
+  if sys.argv[3] == 'use_gui':
+    use_gui = True
+except Exception:
+  pass
+
+if not use_gui:
+  import matplotlib
+  matplotlib.use('Agg')
+
+import matplotlib.pyplot as plt
+import numpy as np
 
 from common import get_sim_results
 
@@ -46,10 +58,11 @@ def get_config(case_name):
 def main(argv):
   case_name = sys.argv[1]
   isx = sys.argv[2] == 'x'
+  save_filename = '%s_%s' % (case_name, 'x' if isx else 'y')
 
   markers = itertools.cycle('oD^px')
   configs = get_config(sys.argv[1])
-  plt.figure()
+  plt.figure(figsize=(10, 8))
   for params in configs:
     res = get_sim_results(**params)
     t = [v['t'] for v in res]
@@ -76,7 +89,10 @@ def main(argv):
   plt.yticks(np.arange(0, 1.2, step=0.1))
   plt.ylim(0, 1.02)
   plt.xlim(left=0)
-  plt.show()
+  if use_gui:
+    plt.show()
+  else:
+    plt.savefig(save_filename)
 
 
 if __name__ == '__main__':
